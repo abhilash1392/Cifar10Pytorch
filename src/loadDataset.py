@@ -7,6 +7,17 @@ from sklearn.model_selection import train_test_split
 import os
 import torch
 
+classes=['airplane',
+  'automobile',
+  'bird',
+  'cat',
+  'deer',
+  'dog',
+  'frog',
+  'horse',
+  'ship',
+  'truck']
+
 def batchToNumpy(file):
     with open(file,'rb') as f:
         d = pickle.load(f,encoding='latin1')
@@ -45,13 +56,12 @@ class ClassificationDataset(Dataset):
         if self.transform:
             image = self.transform(image)
         image = np.array(image,dtype='float32')
-        image = image/255.0 
         label = self.label[item]
         image = torch.tensor(image,dtype=torch.float)
         label = torch.tensor(label,dtype=torch.long)
         return image,label 
 
-transform = transforms.Compose([transforms.Resize(256),transforms.CenterCrop(224),transforms.ToTensor(),transforms.Normalize((0.4915, 0.4823, 0.4468),(0.2470, 0.2435, 0.2616))])
+transform = transforms.Compose([transforms.Resize(256),transforms.CenterCrop(224),transforms.ToTensor(),transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
 
 train_data = ClassificationDataset(data=x_train,label=y_train,transform=transform)
 valid_data = ClassificationDataset(data=x_valid,label=y_valid,transform=transform)
@@ -62,6 +72,9 @@ train_loader = DataLoader(train_data,batch_size=64,shuffle=True)
 valid_loader = DataLoader(valid_data,batch_size=64,shuffle=False)
 
 test_loader = DataLoader(test_data,batch_size=1,shuffle=False)
+
+
+
 
 
 

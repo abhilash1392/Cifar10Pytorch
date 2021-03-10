@@ -1,1 +1,1 @@
-n_epochs = 30
+n_epochs = 50 

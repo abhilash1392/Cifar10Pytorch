@@ -29,10 +29,11 @@ if __name__=="__main__":
             optimizer.step()
             train_loss += loss.item()*data.size(0)
         model.eval()
-        for data,target in valid_loader:
-            output = model(data)
-            loss = criterion(output,target)
-            valid_loss += loss.item()*data.size(0)       
+            with torch.no_grad():
+            for data,target in valid_loader:
+                output = model(data)
+                loss = criterion(output,target)
+                valid_loss += loss.item()*data.size(0)       
         train_loss = train_loss/len(train_loader.sampler)
 
         valid_loss = valid_loss/len(valid_loader.sampler)
