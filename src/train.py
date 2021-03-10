@@ -29,7 +29,7 @@ if __name__=="__main__":
             optimizer.step()
             train_loss += loss.item()*data.size(0)
         model.eval()
-            with torch.no_grad():
+        with torch.no_grad():
             for data,target in valid_loader:
                 output = model(data)
                 loss = criterion(output,target)
@@ -42,4 +42,3 @@ if __name__=="__main__":
             print('Validation Loss Decreased : {:6f} ---> {:.6f} . Saving model')
             torch.save(model.state_dict(),'../models/cifar_10_pretrained.pt')
             valid_loss_min=valid_loss
-
